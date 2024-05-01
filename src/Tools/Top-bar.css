@@ -1,0 +1,23 @@
+.top_bar_unfold{
+    position: fixed;
+    top: 49px;
+    line-height: 40px;
+    height: 40px;
+    left: 15vw;
+    width: 85vw;
+    border-bottom: 2px solid;
+    border-color: #f5f5f5;
+    display: grid;
+}
+
+.top_bar_fold{
+    position: fixed;
+    top: 49px;
+    line-height: 40px;
+    height: 40px;
+    left: 50px;
+    width: calc(100vw - 50px);
+    border-bottom: 2px solid;
+    border-color: #f5f5f5;
+    display: grid;
+}
