@@ -1,0 +1,54 @@
+.Feedback-wrapper_unfold {
+  position: fixed;
+  top: 89px;
+  left: 15vw;
+}
+
+.Feedback-wrapper_fold {
+  position: fixed;
+  top: 89px;
+  left: 50px;
+}
+
+.Feedback-chat_unfold {
+  margin-top: 2.5vh;
+  height: calc(100vh - 150px - 5vh);
+  margin-left: 2.5vw;
+  width: 80vw;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  text-align: right;
+  line-height: normal;
+  overflow: scroll;
+}
+
+.Feedback-chat_unfold::-webkit-scrollbar {
+  display: none;
+}
+
+.Feedback-chat_fold {
+  margin-top: 2.5vh;
+  height: calc(100vh - 150px - 5vh);
+  margin-left: 2.5vw;
+  width: calc(95vw - 50px);
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  text-align: right;
+  line-height: normal;
+  overflow: scroll;
+}
+
+.Feedback-chat_fold::-webkit-scrollbar {
+  display: none;
+}
+
+.Feedback-finbtn {
+  position: fixed;
+  top: 52px;
+  line-height: 30px;
+  height: 30px;
+  left: 87.5vw;
+  margin: 3px;
+  border: none;
+  border-radius: 10px;
+}

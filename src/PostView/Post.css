@@ -1,0 +1,11 @@
+.post {
+  display: flex;
+  border-style: solid;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  justify-content: space-between;
+
+  border-width: 0.5px;
+  padding: 0 30px;
+}

@@ -1,4 +1,4 @@
-.chat_bar_unfold{
+.chat_bar_unfold {
   position: fixed;
   top: calc(100vh - 60px);
   line-height: 50px;
@@ -11,11 +11,11 @@
   background-color: #f5f5f5;
 }
 
-.chat_bar_unfold:focus{
+.chat_bar_unfold:focus {
   outline: none;
 }
 
-.chat_bar_fold{
+.chat_bar_fold {
   position: fixed;
   top: calc(100vh - 60px);
   line-height: 50px;
@@ -28,23 +28,23 @@
   background-color: #f5f5f5;
 }
 
-.chat_bar_fold:focus{
+.chat_bar_fold:focus {
   outline: none;
 }
 
-.wrapper_unfold{
+.wrapper_unfold {
   position: fixed;
   top: 89px;
   left: 15vw;
 }
 
-.wrapper_fold{
+.wrapper_fold {
   position: fixed;
   top: 89px;
   left: 50px;
 }
 
-.chat_unfold{
+.chat_unfold {
   margin-top: 2.5vh;
   height: calc(100vh - 150px - 5vh);
   margin-left: 2.5vw;
@@ -56,11 +56,11 @@
   overflow: scroll;
 }
 
-.chat_unfold::-webkit-scrollbar{
+.chat_unfold::-webkit-scrollbar {
   display: none;
 }
 
-.chat_fold{
+.chat_fold {
   margin-top: 2.5vh;
   height: calc(100vh - 150px - 5vh);
   margin-left: 2.5vw;
@@ -72,11 +72,11 @@
   overflow: scroll;
 }
 
-.chat_fold::-webkit-scrollbar{
+.chat_fold::-webkit-scrollbar {
   display: none;
 }
 
-.finbtn{
+.finbtn {
   position: fixed;
   top: 52px;
   line-height: 30px;
@@ -87,13 +87,13 @@
   border-radius: 10px;
 }
 
-._ul{
+._ul {
   list-style-type: none;
   padding-left: 0px;
   line-height: 200%;
 }
 
-.main_unfold{
+.main_unfold {
   margin-top: 2vh;
   height: 85vh;
   margin-left: 2.5vw;
@@ -104,7 +104,7 @@
   line-height: normal;
 }
 
-.main_fold{
+.main_fold {
   margin-top: 2vh;
   height: 85vh;
   margin-left: 2.5vw;
