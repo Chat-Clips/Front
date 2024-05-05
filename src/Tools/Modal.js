@@ -1,33 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
 
 function Modal(props){
     const {open, close, header }=props
-    const [roomId, setRoomId]=useState("")
+    const [roomname, setRoomname]=useState("")
+    const [roomId, setRoomId]=useState(null)
+    
+    const handleclickclosebtn=()=>{
+        {close()}
+        setRoomId("")
+        setRoomname("")
+    }
+    
     return(
         <div className={open ? "openModal modal" : "modal"}>
             {open ? (
                 <section>
                     <header>
                         <div>{header}</div>
-                        <button className="close" onClick={close}>
+                        <button className="close" onClick={handleclickclosebtn}>
                             &times;
                         </button>
                     </header>
-                    <form>
-                        <main className='grid'>
-                            <input type='text' placeholder='채팅 이름 설정' value={roomId} required onChange={event => setRoomId(event.currentTarget.value)}></input>
-                            <div></div>
-                            <input type='text' placeholder='친구 초대 검색칸'></input>
-                            <div></div>
+                    <main className='grid'>
+                        <form onSubmit>
+                            <input type='text' placeholder='채팅방 이름' value={roomname} required onChange={event => setRoomname(event.currentTarget.value)}></input>
+                            <input type='submit' value='채팅방 만들기'></input>
+                        </form>
+                        <div></div>
+                        <form onSubmit>
+                            <input type='text' value={roomId} placeholder='룸 ID 입력' required onChange={event => setRoomId(event.currentTarget.value)}></input>
+                            <input type='submit' value='채팅방 참여하기'></input>
+                        </form>
                         </main>
-                        <footer>
-                            <button type='submit' className='generate'> 생성 </button>
-                            <button className="close" onClick={close}>
-                                close
-                            </button>
-                        </footer>
-                    </form>
+                    <footer>
+                        <button className="close" onClick={handleclickclosebtn}>
+                            close
+                        </button>
+                    </footer>
                 </section>
             ) : null }
         </div>
