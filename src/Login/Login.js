@@ -40,8 +40,8 @@ function Login(){
     }
 
     return(
-      <div>
-        <form className='login' onSubmit={handlelogin}>
+      <div className='login'>
+        <form className='grid' onSubmit={handlelogin}>
           <div className='login_header'>Chat-Clips</div>
           <div><input type='text' className='login_content' value={id} placeholder='아이디' required onChange={event => setId(event.currentTarget.value)}></input></div>
           <div><input type='password' className='login_content' value={pwd} placeholder='비밀번호' required onChange={event => setPwd(event.currentTarget.value)}></input></div>
