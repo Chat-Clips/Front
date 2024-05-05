@@ -2,8 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import './Header.css'
 import Modal from './Modal';
+import { useNavigate } from 'react-router-dom/dist';
+import axios from 'axios';
 
 function Header({sidebarAction}){
+  const navigate=useNavigate();
   const [modalOpen, setModalOpen]=useState(false)
   const [menuOpen, setMenuOpen]=useState(true)
   
@@ -19,12 +22,34 @@ function Header({sidebarAction}){
     sidebarAction();
   }
 
+  const Postlogout=async()=>{
+    try{
+      const res = await axios.post('/user/logout');
+      return res;
+    }
+    catch(error){
+      console.log(error)
+    }  
+  }
+
+  const handlelogout=async()=>{
+    const res= await Postlogout();
+    if(res.data === '로그아웃'){
+      alert('로그아웃합니다.')
+      navigate('/Login');
+    }
+    else{
+      alert('error');
+    }
+  }
+
   return(
     <div>
       <div className='Header'>
         <button className='menu_btn' onClick={clickMenu}>☰</button>
         <div>Chatclips</div>
         <div></div>
+        <button className='logout' onClick={handlelogout}>Logout</button>
       </div>
       <div className={menuOpen ? 'menu_unfold' : 'menu_fold'}>
         <React.Fragment>
