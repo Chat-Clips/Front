@@ -8,6 +8,7 @@ import axios from 'axios';
 function Header({sidebarAction}){
   const navigate=useNavigate();
   const [modalOpen, setModalOpen]=useState(false)
+  const [init,setInit]=useState(false)
   const [menuOpen, setMenuOpen]=useState(true)
   
   const openModal=()=>{
@@ -43,6 +44,10 @@ function Header({sidebarAction}){
     }
   }
 
+  const initChatholder=()=>{
+    setInit(!init)
+  }
+
   return(
     <div>
       <div className='Header'>
@@ -54,7 +59,7 @@ function Header({sidebarAction}){
       <div className={menuOpen ? 'menu_unfold' : 'menu_fold'}>
         <React.Fragment>
           <button className='btn' onClick={openModal}>{menuOpen ? '✉ new chat' : '✉'}</button>
-          <Modal open={modalOpen} close={closeModal} header="new chat">
+          <Modal open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
           </Modal>
         </React.Fragment>
         <button className='btn'>{menuOpen ? '✔ feedback' : '✔'}</button>

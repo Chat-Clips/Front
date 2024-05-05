@@ -1,11 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
 import axios from 'axios';
-import SockJS from 'sockjs-client';
-import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
 import { connectStomp, disconnectStomp } from '../Chat/ws';
-import { useLocation } from 'react-router-dom';
 
 function Modal(props){
     const uid=props.uid;

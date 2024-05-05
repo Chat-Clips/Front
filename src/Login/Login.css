@@ -8,6 +8,11 @@
     border-radius: 20px;
     text-align: center;
     line-height: normal;
+    grid-template-rows: 43vh 5vh;
+  }
+
+  .grid{
+    display: grid;
     grid-template-rows: 15vh 10vh 12vh 5vh;
   }
   
