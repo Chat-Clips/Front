@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
+import axios from 'axios';
 
 function Modal(props){
     const {open, close, header }=props
@@ -12,6 +13,30 @@ function Modal(props){
         setRoomname("")
     }
     
+    //createChatroom
+    const PostcreateRoom = async()=>{
+        try{
+            const res= await axios.post('/chatroom/createRoom?roomName='+roomname);
+            //console.log(res);
+            return res;
+        }
+        catch(error){console.log(error)}        
+    }
+
+    const handlecreateRoom = async() => {
+        const res=await PostcreateRoom();
+        if(res.status===200){
+            alert("새로운 채팅방의 룸ID: "+res.data);
+            setRoomId(res.data);
+            setRoomname("")
+        }
+        else{
+            alert('error')
+            setRoomname("")
+        }
+    }
+    //
+
     return(
         <div className={open ? "openModal modal" : "modal"}>
             {open ? (
@@ -23,7 +48,7 @@ function Modal(props){
                         </button>
                     </header>
                     <main className='grid'>
-                        <form onSubmit>
+                        <form onSubmit={handlecreateRoom}>
                             <input type='text' placeholder='채팅방 이름' value={roomname} required onChange={event => setRoomname(event.currentTarget.value)}></input>
                             <input type='submit' value='채팅방 만들기'></input>
                         </form>
@@ -32,7 +57,7 @@ function Modal(props){
                             <input type='text' value={roomId} placeholder='룸 ID 입력' required onChange={event => setRoomId(event.currentTarget.value)}></input>
                             <input type='submit' value='채팅방 참여하기'></input>
                         </form>
-                        </main>
+                    </main>
                     <footer>
                         <button className="close" onClick={handleclickclosebtn}>
                             close
