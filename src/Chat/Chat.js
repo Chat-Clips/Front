@@ -5,7 +5,6 @@ import Topbar from '../Tools/Top-bar';
 import '../App.css';
 import Summary from '../Summary/Summary';
 import * as dayjs from 'dayjs';
-import { connectStomp, disconnectStomp } from './ws';
 import axios from 'axios';
 
 function Chatroom(props){

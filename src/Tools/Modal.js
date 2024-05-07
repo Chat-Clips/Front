@@ -1,15 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
 import axios from 'axios';
+import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
-import { connectStomp, disconnectStomp } from '../Chat/ws';
+import { useLocation } from 'react-router-dom';
+import { wait } from '@testing-library/user-event/dist/utils';
+import { Stomp } from '@stomp/stompjs';
 
 function Modal(props){
+    const stompClient=useRef(null);
+    //const uid=useRecoilValue(Uid)
     const uid=props.uid;
     const {open, close, enter, header }=props
     const [roomname, setRoomname]=useState("")
-    const [roomId, setRoomId]=useState(null)
-    const [client , setClient]=useState(null);
+    const [roomId, setRoomId]=useState('')
     
     const handleclickclosebtn=()=>{
         {close()}
@@ -21,7 +25,6 @@ function Modal(props){
     const PostcreateRoom = async()=>{
         try{
             const res= await axios.post('/chatroom/createRoom?roomName='+roomname);
-            //console.log(res);
             return res;
         }
         catch(error){console.log(error)}        
@@ -43,17 +46,16 @@ function Modal(props){
     
     //EnterChatroom
     useEffect(()=>{
-        if(open){
-            setClient(connectStomp(uid, null));    
-        }
-
-        return()=>disconnectStomp(client)
-    },[open])
+        connectStomp();
+        console.log(typeof stompClient.send)
+        
+        return()=>disconnectStomp()
+    },[])
 
     const userenter=()=>{
-        console.log(client);
         const currentTime=dayjs();
-        client.publish({
+        wait(3000)
+        stompClient.current.publish({
             destination: "/pub/enterUser",
             body: JSON.stringify({
                 type: "ENTER",
@@ -64,13 +66,44 @@ function Modal(props){
             }),
         });
     }
-    
+
     const handlejoinRoom =() => {
         userenter();
         {enter()}
         handleclickclosebtn();
     }
     //
+
+    //웹소켓 연결
+    const connectStomp=()=>{
+        try{
+          const socket=new WebSocket("ws://localhost:8080/ws");
+          stompClient.current=Stomp.over(socket);
+          stompClient.current.connect({},()=>{
+            stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>
+            {
+              if(message.body){
+                let m=JSON.parse(message.body);
+                console.log(m)
+              }    
+            });
+          console.log(roomId);
+          stompClient.current.activate();
+          });
+        }
+        catch(error){
+            console.log(error);
+        }
+      }
+
+      
+    //웹소켓 연결 해제
+    const disconnectStomp=()=>{
+        if(stompClient.current.connected){
+        stompClient.current.deactivate();;
+        }
+    }
+
 
     return(
         <div className={open ? "openModal modal" : "modal"}>
@@ -89,7 +122,7 @@ function Modal(props){
                         </form>
                         <div></div>
                         <form onSubmit={handlejoinRoom}>
-                            <input type='text' value={roomId} placeholder='룸 ID 입력' required onChange={event => setRoomId(event.currentTarget.value)}></input>
+                            <input type='text' value={roomId} placeholder='룸 ID 입력' required onChange={event => setRoomId(event.currentTarget.value)} onSubmit={event => setRoomId(event.currentTarget.value)}></input>
                             <input type='submit' value='채팅방 참여하기'></input>
                         </form>
                         </main>
