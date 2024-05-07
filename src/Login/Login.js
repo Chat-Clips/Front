@@ -23,11 +23,11 @@ function Login(){
       }
     }
 
-    const handlelogin = async(event) =>{
+    const handlelogin = async() =>{
       const res= await PostLogin();
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
-        navigate('/App' , {state : id});
+        navigate('/App');
       }else{
         alert('실패')
         setId('');
@@ -36,7 +36,7 @@ function Login(){
     }
 
     const handlesignin = event =>{
-        navigate('/Signup', {state : id});
+        navigate('/Signup');
     }
 
     return(
