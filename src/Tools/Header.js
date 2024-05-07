@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
 import axios from 'axios';
-import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
-import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Uid } from './atoms';
 import { wait } from '@testing-library/user-event/dist/utils';
