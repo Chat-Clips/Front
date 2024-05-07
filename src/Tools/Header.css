@@ -1,4 +1,5 @@
 .Header{
+    z-index: 3;
     position: fixed;
     height: 39px;
     width: 100vw;

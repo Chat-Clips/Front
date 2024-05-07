@@ -1,160 +1,129 @@
-import { useEffect, useState, useRef } from 'react';
-import './Modal.css'
+import React, { useEffect, useRef } from 'react';
+import { useState, useLocation} from 'react';
+import './Header.css'
+import { useNavigate } from 'react-router-dom';
+import Modal from './Modal';
 import axios from 'axios';
-import dayjs from 'dayjs';
-import { useRecoilValue } from 'recoil';
 import { Uid } from './atoms';
+import { useRecoilValue } from 'recoil';
 import { wait } from '@testing-library/user-event/dist/utils';
-import { Stomp } from '@stomp/stompjs';
 
-function Modal(props){
-    const stompClient=useRef(null);
-    const uid=useRecoilValue(Uid)
-    const {open, close, enter, header }=props
-    const [roomname, setRoomname]=useState("")
-    const [roomId, setRoomId]=useState('')
-   // const [join, setJoin]=useState(false)
-    
-    const handleclickclosebtn=()=>{
-        {close()}
-        setRoomId("")
-        setRoomname("")
+function Header(props){
+  const navigate=useNavigate();
+  const uid=useRecoilValue(Uid)
+  const [modalOpen, setModalOpen]=useState(false)
+  const [init,setInit]=useState(false)
+  const [menuOpen, setMenuOpen]=useState(true)
+  const [chatroomlist, setChatroomlist]=useState([]);
+  const [roomIdlist, setRoomIdlist]=useState([])
+  //console.log(uid)
+
+  const openModal=()=>{
+    setModalOpen(true)
+  }
+  const closeModal=()=>{
+    setModalOpen(false)
+  }
+
+  const clickMenu=()=>{
+    setMenuOpen(!menuOpen)
+    props.sidebarAction();
+  }
+
+  const Postlogout=async()=>{
+    try{
+      const res = await axios.post('https://7e19-165-194-17-109.ngrok-free.app/user/logout');
+      return res;
     }
-    
-    //createChatroom
-    const PostcreateRoom = async()=>{
-        try{
-            const res= await axios.post('https://7e19-165-194-17-109.ngrok-free.app/chatroom/createRoom?roomName='+roomname);
-            //console.log(res);
-            return res;
-        }
-        catch(error){console.log(error)}        
+    catch(error){
+      console.log(error)
+    }  
+  }
+
+  const handlelogout=async()=>{
+    const res= await Postlogout();
+    if(res.data === '로그아웃'){
+      alert('로그아웃')
+      navigate('/Login');
     }
-
-    const handlecreateRoom = async() => {
-        const res=await PostcreateRoom();
-        if(res.status===200){
-            alert("새로운 채팅방의 룸ID: "+res.data);
-            setRoomId(res.data);
-            setRoomname("")
-        }
-        else{
-            alert('error')
-            setRoomname("")
-        }
+    else{
+      alert('error');
     }
-    //
-    
-    //EnterChatroom
-    useEffect(()=>{
-        connectStomp();
-        console.log(typeof stompClient.send)
-        
-        return()=>disconnectStomp()
-    },[])
+  }
 
-    /*const userenter=()=>{
-        const currentTime=dayjs();
-        if(stompClient.current){
-            const messageObj={    
-                type: "ENTER",
-                roomId: roomId,
-                sender: uid,
-                message: '입장',
-                time : currentTime,
-            };
-        stompClient.send("/pub/enterUser",{},JSON.stringify(messageObj))
-        }
-    }*/
-
-    const userenter=()=>{
-        const currentTime=dayjs();
-        wait(3000)
-        stompClient.current.publish({
-            destination: "/pub/enterUser",
-            body: JSON.stringify({
-                type: "ENTER",
-                roomId: roomId,
-                sender: uid,
-                message: '입장',
-                time : currentTime
-            }),
-        });
-    }
-    
-
-    const handlejoinRoom =() => {
-        userenter();
-        enter()
-        handleclickclosebtn();
-    }
-    //
-
-    //웹소켓 연결
-    const connectStomp=()=>{
-        try{
-          const socket=new WebSocket("ws://localhost:8080/ws");
-          stompClient.current=Stomp.over(socket);
-          stompClient.current.connect({},()=>{
-            stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>
-            {
-              if(message.body){
-                let m=JSON.parse(message.body);
-                console.log(m)
-                /*
-                if((msg.sender !== m.sender) && (msg.message!==m.message)){
-                  setMsg(m)
-                }*/
-              }    
-            });
-          console.log(roomId);
-          stompClient.current.activate();
-          });
-        }
-        catch(error){
-            console.log(error);
-        }
+  //참여하고 있는 채팅방 표시
+  const Getlist=async()=>{
+    try{
+      const res= await axios.get('https://7e19-165-194-17-109.ngrok-free.app/chatroom?userId='+uid);
+      let namelist=[]
+      let idlist=[]
+      for(var i=0; i< res.data.length;++i){
+        namelist.push(res.data[i].roomName);
+        idlist.push(res.data[i].roomId);
       }
-
-      
-    //웹소켓 연결 해제
-    const disconnectStomp=()=>{
-        if(stompClient.current.connected){
-        stompClient.current.deactivate();;
-        }
+      setChatroomlist(namelist);
+      setRoomIdlist(idlist);
     }
+    catch(error){
+      console.log(error);
+    }
+  }
 
+  useEffect(()=>{
+    Getlist();
+  },[init]);
 
-    return(
-        <div className={open ? "openModal modal" : "modal"}>
-            {open ? (
-                <section>
-                    <header>
-                        <div>{header}</div>
-                        <button className="close" onClick={handleclickclosebtn}>
-                            &times;
-                        </button>
-                    </header>
-                    <main className='grid'>
-                        <form onSubmit={handlecreateRoom}>
-                            <input type='text' placeholder='채팅방 이름' value={roomname} required onChange={event => setRoomname(event.currentTarget.value)}></input>
-                            <input type='submit' value='채팅방 만들기'></input>
-                        </form>
-                        <div></div>
-                        <form onSubmit={handlejoinRoom}>
-                            <input type='text' value={roomId} placeholder='룸 ID 입력' required onChange={event => setRoomId(event.currentTarget.value)} onSubmit={event => setRoomId(event.currentTarget.value)}></input>
-                            <input type='submit' value='채팅방 참여하기'></input>
-                        </form>
-                        </main>
-                    <footer>
-                        <button className="close" onClick={handleclickclosebtn}>
-                            close
-                        </button>
-                    </footer>
-                </section>
-            ) : null }
+  const initChatholder=()=>{
+    wait(3000)
+    Getlist();
+    setInit(!init)
+  }
+  //
+
+  return(
+    <div>
+      <div className='Header'>
+        <button className='menu_btn' onClick={clickMenu}>☰</button>
+        <div>Chatclips</div>
+        <div></div>
+        <button className='logout' onClick={handlelogout}>Logout</button>
+      </div>
+      <div className={menuOpen ? 'menu_unfold' : 'menu_fold'}>
+        <React.Fragment>
+          <button className='btn' onClick={openModal}>{menuOpen ? '✉ new chat' : '✉'}</button>
+          <Modal uid={uid} open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
+          </Modal>
+        </React.Fragment>
+        <button className='btn'>{menuOpen ? '✔ feedback' : '✔'}</button>
+        <div className='chatholder'>
+          <Chatroomlist open={modalOpen} list={chatroomlist} clickevent={props.getinfo} idlist={roomIdlist}/>
         </div>
-    );
+      </div>
+    </div>
+  );
+
 }
 
-export default Modal;
+function Chatroomlist(props){
+  const [title, setTitle]=useState(null)
+  const [key, setKey]=useState(null)
+  
+  useEffect(()=>{
+    if(title!==null && props.idlist!==null){
+      props.clickevent(title, props.idlist[key])
+    }
+    //console.log(title,props.idlist[key])
+    },[title,key])
+
+  return(
+    props.list.map((name,i)=>{
+      return(
+        <div className='gotochatroom' style={{listStyleType:'none'}} onClick={()=>{setTitle(name);setKey(i)}} key={i}>
+          {name}
+        </div>
+      );
+    })
+  );
+}
+
+export default Header;

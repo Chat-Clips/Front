@@ -53,20 +53,6 @@ function Modal(props){
         return()=>disconnectStomp()
     },[])
 
-    /*const userenter=()=>{
-        const currentTime=dayjs();
-        if(stompClient.current){
-            const messageObj={    
-                type: "ENTER",
-                roomId: roomId,
-                sender: uid,
-                message: '입장',
-                time : currentTime,
-            };
-        stompClient.send("/pub/enterUser",{},JSON.stringify(messageObj))
-        }
-    }*/
-
     const userenter=()=>{
         const currentTime=dayjs();
         wait(3000)
@@ -82,7 +68,6 @@ function Modal(props){
         });
     }
     
-
     const handlejoinRoom =() => {
         userenter();
         {enter()}
@@ -93,7 +78,7 @@ function Modal(props){
     //웹소켓 연결
     const connectStomp=()=>{
         try{
-          const socket=new WebSocket("ws://localhost:8080/ws");
+          const socket=new WebSocket("wss://7e19-165-194-17-109.ngrok-free.app/ws");
           stompClient.current=Stomp.over(socket);
           stompClient.current.connect({},()=>{
             stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>
