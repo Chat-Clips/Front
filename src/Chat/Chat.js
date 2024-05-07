@@ -6,8 +6,11 @@ import '../App.css';
 import Summary from '../Summary/Summary';
 import * as dayjs from 'dayjs';
 import axios from 'axios';
+import { Uid } from '../Tools/atoms';
+import { useRecoilValue } from 'recoil';
 
 function Chatroom(props){
+    const uid=useRecoilValue(Uid);
     const [text, setText]=useState('');
     const [chat, setChat]=useState([]);
     const [lock, setLock]=useState(false);

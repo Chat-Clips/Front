@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { Uid } from '../Tools/atoms';
 
 function Login(){
     const navigate=useNavigate();
     const [id, setId]=useState('')
     const [pwd, setPwd]=useState('')
+    const [uid, setUid]=useRecoilState(Uid);
     
     const PostLogin=async()=>{
       let data={
@@ -23,10 +26,15 @@ function Login(){
       }
     }
 
-    const handlelogin = async() =>{
+    const Getrecoil=()=>{
+      setUid(id);
+    }
+
+    const handlelogin = async(event) =>{
       const res= await PostLogin();
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
+        Getrecoil();
         navigate('/App');
       }else{
         alert('실패')
@@ -47,8 +55,8 @@ function Login(){
           <div><input type='password' className='login_content' value={pwd} placeholder='비밀번호' required onChange={event => setPwd(event.currentTarget.value)}></input></div>
           <div><input value='로그인' type='submit' className='login_btn'></input></div>
         </form>
-        <div><button className='signin_btn' onClick={handlesignin}>회원가입</button></div>
-      </div>
+          <div><button className='signin_btn' onClick={handlesignin}>회원가입</button></div>
+        </div>
     );
 }
 

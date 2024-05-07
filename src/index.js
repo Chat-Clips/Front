@@ -6,17 +6,21 @@ import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Login from './Login/Login';
 import Signup from './Login/Signup';
+import { RecoilRoot } from 'recoil';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root'));
 root.render(
-  <HashRouter>
-    <Routes>
-      <Route path='/' element={<Login />} />
-      <Route path='/Login' element={<Login />} />
-      <Route path='/App' element={<App />} />
-      <Route path='/Signup' element={<Signup/>}/>
-    </Routes>
-  </HashRouter>
+    <RecoilRoot>  
+      <HashRouter>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/Login' element={<Login />} />
+          <Route path='/App' element={<App />} />
+          <Route path='/Signup' element={<Signup/>}/>
+        </Routes>
+      </HashRouter>
+    </RecoilRoot> 
 );
 
 // If you want to start measuring performance in your app, pass a function
