@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Uid } from '../Tools/atoms';
 
 function Login(){
@@ -17,7 +17,7 @@ function Login(){
         password: pwd
       };
       try{
-        const res=await axios.post("/user/login",data);
+        const res=await axios.post("https://7e19-165-194-17-109.ngrok-free.app/user/login",data);
         console.log(data,res);
         return res;
       }
