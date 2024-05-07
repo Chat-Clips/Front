@@ -10,6 +10,8 @@ function Login(){
     const [id, setId]=useState('')
     const [pwd, setPwd]=useState('')
     const [uid, setUid]=useRecoilState(Uid);
+
+    console.log(uid)
     
     const PostLogin=async()=>{
       let data={
@@ -43,7 +45,7 @@ function Login(){
       }
     }
 
-    const handlesignin = event =>{
+    const handlesignin = () =>{
         navigate('/Signup');
     }
 

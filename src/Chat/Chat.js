@@ -16,8 +16,8 @@ function Chatroom(props){
   const lock=props.lock
 
     const [text, setText]=useState('');
-    const [jp, setJp]=useState([])
-    const [note, setNote]=useState(null);
+    const [jp, setJp]=useState([]);
+    //const [note, setNote]=useState(null);
     const [msg, setMsg]=useState('')
     
     //웹소켓 연결
@@ -62,9 +62,12 @@ function Chatroom(props){
 
   //
   useEffect(()=>{
-    setRoomId(props.roomId)
-    connectStomp();
-    getChatting(props.roomId);
+    const fetch = async () => {
+      await setRoomId(props.roomId)
+      await connectStomp();
+      await getChatting(props.roomId);
+    };
+    fetch();
 
     return() => disconnectStomp();
   },[props.roomId]) //roomId가 바뀐 경우
@@ -87,7 +90,7 @@ function Chatroom(props){
   //자동 스크롤
   useEffect(()=>{
     messageEndRef.current.scrollIntoView({behavior: 'smooth'});
-    //console.log(jp)
+    console.log(jp)
   }, [jp]);
     
   //회의 끝내기

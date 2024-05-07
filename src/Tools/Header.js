@@ -85,7 +85,7 @@ function Modal(props){
 
     const handlejoinRoom =() => {
         userenter();
-        {enter()}
+        enter()
         handleclickclosebtn();
     }
     //
