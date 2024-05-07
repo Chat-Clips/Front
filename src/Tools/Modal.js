@@ -3,11 +3,12 @@ import './Modal.css'
 import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
-import { Uid } from './atoms';
+import { connectStomp, disconnectStomp } from '../Chat/Chat';
 import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { Uid } from './atoms';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { Stomp } from '@stomp/stompjs';
-import { useRecoilValue } from 'recoil';
 
 function Modal(props){
     const stompClient=useRef(null);
@@ -15,6 +16,7 @@ function Modal(props){
     const {open, close, enter, header }=props
     const [roomname, setRoomname]=useState("")
     const [roomId, setRoomId]=useState('')
+   // const [join, setJoin]=useState(false)
     
     const handleclickclosebtn=()=>{
         {close()}
@@ -26,6 +28,7 @@ function Modal(props){
     const PostcreateRoom = async()=>{
         try{
             const res= await axios.post('/chatroom/createRoom?roomName='+roomname);
+            //console.log(res);
             return res;
         }
         catch(error){console.log(error)}        
@@ -53,6 +56,20 @@ function Modal(props){
         return()=>disconnectStomp()
     },[])
 
+    /*const userenter=()=>{
+        const currentTime=dayjs();
+        if(stompClient.current){
+            const messageObj={    
+                type: "ENTER",
+                roomId: roomId,
+                sender: uid,
+                message: '입장',
+                time : currentTime,
+            };
+        stompClient.send("/pub/enterUser",{},JSON.stringify(messageObj))
+        }
+    }*/
+
     const userenter=()=>{
         const currentTime=dayjs();
         wait(3000)
@@ -67,6 +84,7 @@ function Modal(props){
             }),
         });
     }
+    
 
     const handlejoinRoom =() => {
         userenter();
@@ -86,6 +104,10 @@ function Modal(props){
               if(message.body){
                 let m=JSON.parse(message.body);
                 console.log(m)
+                /*
+                if((msg.sender !== m.sender) && (msg.message!==m.message)){
+                  setMsg(m)
+                }*/
               }    
             });
           console.log(roomId);
