@@ -4,13 +4,28 @@ import Topbar from './Tools/Top-bar';
 import './App.css';
 import { useLocation } from 'react-router-dom';
 import Chatroom from './Chat/Chat';
-
-//닉네임 - 메세지 - 시간
+import Summary from './Summary/Summary';
 
 function App() {
   const {state} = useLocation();
   const [foldsidebar, setFoldsidebar]=useState(false)
+  const [chat, setChat]=useState({title: null,roomId: null})
+  const [lock, setLock]=useState([])
   const uid=state;
+
+  const handlechild=(name,id)=>{
+    let list={
+      title : name,
+      roomId : id,
+    }
+    if(name!==null){setChat(list)}
+  }
+
+  const handleLock=(id)=>{
+    let newlock=[...lock];
+    newlock.push(id)
+    setLock(newlock)
+  }
 
   const handlesidebar = () =>{
     setFoldsidebar(!foldsidebar)
@@ -27,13 +42,25 @@ function App() {
     );
   }
 
+
+  const element1=(
+    <Readme sidebar={foldsidebar}></Readme>
+  )
+
+  const element2=(
+    <Chatroom title={chat.title} roomId={chat.roomId} lock={handleLock}></Chatroom>
+  )
+
+  const element3=(
+    <Summary sidebar={foldsidebar}></Summary>
+  )
+  
   return(
     <div>
-      <Topbar title='#chat' sidebar={foldsidebar}></Topbar>
-      <Chatroom sidebar={foldsidebar}></Chatroom>
-      <Header sidebarAction={handlesidebar}></Header>
+      <Topbar title={chat.title} sidebar={foldsidebar}></Topbar>
+      {(lock.includes(chat.roomId))?element3:(((chat.roomId===null)&&(chat.title===null))?element1:element2)}
+      <Header getinfo={handlechild} sidebarAction={handlesidebar}></Header>
     </div>
   );
 }
-
 export default App;

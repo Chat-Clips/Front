@@ -3,14 +3,15 @@ import './Modal.css'
 import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
+import { Uid } from './atoms';
 import { useLocation } from 'react-router-dom';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { Stomp } from '@stomp/stompjs';
+import { useRecoilValue } from 'recoil';
 
 function Modal(props){
     const stompClient=useRef(null);
-    //const uid=useRecoilValue(Uid)
-    const uid=props.uid;
+    const uid=useRecoilValue(Uid)
     const {open, close, enter, header }=props
     const [roomname, setRoomname]=useState("")
     const [roomId, setRoomId]=useState('')
