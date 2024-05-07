@@ -1,10 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import './Modal.css'
 import axios from 'axios';
-import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import dayjs from 'dayjs';
-import { connectStomp, disconnectStomp } from '../Chat/Chat';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Uid } from './atoms';
@@ -28,7 +26,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await axios.post('/chatroom/createRoom?roomName='+roomname);
+            const res= await axios.post('https://7e19-165-194-17-109.ngrok-free.app/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }
