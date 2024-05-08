@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom';
 import Chatroom from './Chat/Chat'
 import Summary from './Summary/Summary';
 
+export const baseurl='https://2cb4-165-194-17-109.ngrok-free.app'
+
 function App() {
   const [foldsidebar, setFoldsidebar]=useState(false)
   const [chat, setChat]=useState({title: null,roomId: null})

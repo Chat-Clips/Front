@@ -7,8 +7,6 @@ import { Uid } from './atoms';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { Stomp } from '@stomp/stompjs';
 
-//export const baseurl='http://13.125.121.147:8080'
-
 function Modal(props){
     const stompClient=useRef(null);
     const uid=useRecoilValue(Uid)
@@ -82,7 +80,7 @@ function Modal(props){
     //웹소켓 연결
     const connectStomp=()=>{
         try{
-          const socket=new WebSocket("wss://2cb4-165-194-17-109.ngrok-free.app/ws");
+          const socket=new WebSocket("ws://2cb4-165-194-17-109.ngrok-free.app/ws");
           stompClient.current=Stomp.over(socket);
           stompClient.current.connect({},()=>{
             stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>

@@ -47,7 +47,7 @@ function Header(props){
       navigate('/Login');
     }
     else{
-      alert('error');
+      alert(res.data);
     }
   }
 

@@ -35,7 +35,7 @@ function Signup(){
         alert('회원가입 완료');
         navigate('/Login');
       }else{
-        alert('error');
+        alert(res.data);
         setId('');setNickname('');setPwd('');
       }
       
