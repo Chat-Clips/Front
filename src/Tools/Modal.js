@@ -24,7 +24,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await axios.post('https://2cb4-165-194-17-109.ngrok-free.app/chatroom/createRoom?roomName='+roomname);
+            const res= await axios.post('http://13.125.121.147:8080/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }
@@ -79,7 +79,7 @@ function Modal(props){
     //웹소켓 연결
     const connectStomp=()=>{
         try{
-          const socket=new WebSocket("wss://2cb4-165-194-17-109.ngrok-free.app/ws");
+          const socket=new WebSocket("ws://13.125.121.147:8080/ws");
           stompClient.current=Stomp.over(socket);
           stompClient.current.connect({},()=>{
             stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>

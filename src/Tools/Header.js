@@ -32,7 +32,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await axios.post('https://2cb4-165-194-17-109.ngrok-free.app/user/logout');
+      const res = await axios.post('http://13.125.121.147:8080/user/logout');
       return res;
     }
     catch(error){
@@ -42,8 +42,9 @@ function Header(props){
 
   const handlelogout=async()=>{
     const res= await Postlogout();
-    if(res.data === '로그아웃'){
-      alert('로그아웃')
+    console.log(res)
+    if(res.data === "로그아웃" || res.data===""){
+      alert("로그아웃")
       navigate('/Login');
     }
     else{
@@ -55,7 +56,7 @@ function Header(props){
   const Getlist=async()=>{
     try{
       console.log(uid);
-      const res= await axios.get('https://2cb4-165-194-17-109.ngrok-free.app/chatroom?userId='+uid);
+      const res= await axios.get('http://13.125.121.147:8080/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){
