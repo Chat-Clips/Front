@@ -32,7 +32,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await axios.post('https://7e19-165-194-17-109.ngrok-free.app/user/logout');
+      const res = await axios.post('http://13.125.121.147:8080/user/logout');
       return res;
     }
     catch(error){
@@ -54,7 +54,7 @@ function Header(props){
   //참여하고 있는 채팅방 표시
   const Getlist=async()=>{
     try{
-      const res= await axios.get('https://7e19-165-194-17-109.ngrok-free.app/chatroom?userId='+uid);
+      const res= await axios.get('http://13.125.121.147:8080/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){
