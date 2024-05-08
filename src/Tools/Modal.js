@@ -24,7 +24,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await axios.post('http://13.125.121.147:8080/chatroom/createRoom?roomName='+roomname);
+            const res= await axios.post('api/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }

@@ -32,7 +32,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await axios.post('http://13.125.121.147:8080/user/logout');
+      const res = await axios.post('api/user/logout');
       return res;
     }
     catch(error){
@@ -55,7 +55,7 @@ function Header(props){
   const Getlist=async()=>{
     try{
       console.log(uid)
-      const res= await axios.get('http://13.125.121.147:8080/chatroom?userId='+uid);
+      const res= await axios.get('api/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){
