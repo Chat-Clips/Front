@@ -16,7 +16,7 @@ function Header(props){
   const [menuOpen, setMenuOpen]=useState(true)
   const [chatroomlist, setChatroomlist]=useState([]);
   const [roomIdlist, setRoomIdlist]=useState([])
-  console.log(uid)
+  //console.log(uid)
 
   const openModal=()=>{
     setModalOpen(true)
@@ -32,7 +32,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await axios.post('api/user/logout');
+      const res = await axios.post('http://13.125.121.147:8080/user/logout');
       return res;
     }
     catch(error){
@@ -54,8 +54,8 @@ function Header(props){
   //참여하고 있는 채팅방 표시
   const Getlist=async()=>{
     try{
-      console.log(uid)
-      const res= await axios.get('api/chatroom?userId='+uid);
+      console.log(uid);
+      const res= await axios.get('http://13.125.121.147:8080/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){

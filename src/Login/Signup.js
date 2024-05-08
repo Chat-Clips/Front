@@ -20,7 +20,7 @@ function Signup(){
         password: pwd
       };
       try{
-        const res=await axios.post("api/user/signup", data);
+        const res=await axios.post("http://13.125.121.147:8080/user/signup", data);
         console.log(data,res);
         return res;
       }

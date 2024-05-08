@@ -19,7 +19,7 @@ function Login(){
         password: pwd
       };
       try{
-        const res=await axios.post("api/user/login",data);
+        const res=await axios.post("http://13.125.121.147:8080/user/login",data);
         console.log(data,res);
         return res;
       }
@@ -33,7 +33,7 @@ function Login(){
     }
 
     const handlelogin = async(event) =>{
-      event.preventDefault();
+      event.preventDefault()
       const res= await PostLogin();
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
