@@ -16,7 +16,7 @@ function Header(props){
   const [menuOpen, setMenuOpen]=useState(true)
   const [chatroomlist, setChatroomlist]=useState([]);
   const [roomIdlist, setRoomIdlist]=useState([])
-  //console.log(uid)
+  console.log(uid)
 
   const openModal=()=>{
     setModalOpen(true)
@@ -54,6 +54,7 @@ function Header(props){
   //참여하고 있는 채팅방 표시
   const Getlist=async()=>{
     try{
+      console.log(uid)
       const res= await axios.get('http://13.125.121.147:8080/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]

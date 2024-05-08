@@ -28,7 +28,8 @@ function Signup(){
         console.error(error);
       }
     }
-    const handlesignup = async() =>{
+    const handlesignup = async(event) =>{
+      event.preventDefault();
       const res= await PostSignup();
       if(res.data === "회원가입이 완료되었습니다."){
         alert('회원가입 완료');

@@ -16,7 +16,7 @@ function Modal(props){
    // const [join, setJoin]=useState(false)
     
     const handleclickclosebtn=()=>{
-        {close()}
+        close()
         setRoomId("")
         setRoomname("")
     }
@@ -31,7 +31,8 @@ function Modal(props){
         catch(error){console.log(error)}        
     }
 
-    const handlecreateRoom = async() => {
+    const handlecreateRoom = async(event) => {
+        event.preventDefault();
         const res=await PostcreateRoom();
         if(res.status===200){
             alert("새로운 채팅방의 룸ID: "+res.data);
@@ -68,9 +69,10 @@ function Modal(props){
         });
     }
     
-    const handlejoinRoom =() => {
+    const handlejoinRoom =(event) => {
+        event.preventDefault();
         userenter();
-        {enter()}
+        enter()
         handleclickclosebtn();
     }
     //

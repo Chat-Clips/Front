@@ -7,12 +7,10 @@ import Chatroom from './Chat/Chat'
 import Summary from './Summary/Summary';
 
 function App() {
-  const {state} = useLocation();
   const [foldsidebar, setFoldsidebar]=useState(false)
   const [chat, setChat]=useState({title: null,roomId: null})
   const [lock, setLock]=useState([])
   const [note, setNote]=useState('');
-  const uid=state;
 
   const getGptsum=(e)=>{
     setNote(e)

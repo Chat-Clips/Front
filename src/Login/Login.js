@@ -33,6 +33,7 @@ function Login(){
     }
 
     const handlelogin = async(event) =>{
+      event.preventDefault();
       const res= await PostLogin();
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
