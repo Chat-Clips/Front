@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Chatroom from './Chat/Chat'
 import Summary from './Summary/Summary';
 
-export const baseurl='https://2cb4-165-194-17-109.ngrok-free.app'
+//export const baseurl='https://2cb4-165-194-17-109.ngrok-free.app'
 
 function App() {
   const [foldsidebar, setFoldsidebar]=useState(false)
@@ -67,7 +67,7 @@ function App() {
   
   return(
     <div>
-      <Topbar title={chat.title} sidebar={foldsidebar}></Topbar>
+      <Topbar title={chat.title} roomId={chat.roomId} sidebar={foldsidebar}></Topbar>
       {(lock.includes(chat.roomId))?element3:(((chat.roomId===null)&&(chat.title===null))?element1:element2)}
       <Header getinfo={handlechild} sidebarAction={handlesidebar}></Header>
     </div>

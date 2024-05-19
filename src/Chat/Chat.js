@@ -75,7 +75,7 @@ function Chatroom(props){
   //채팅 내용 복구
   const getChatting=async(rid)=>{
     try{
-      const res=await axios.get('http://13.125.121.147:8080/chatroom/loadChatting?request='+rid)
+      const res=await axios.get('http://13.125.121.147:8080/chatroom/loadChatting?roomId='+rid)
       var json=JSON.stringify(res.data.result.loadChat)
       var jp=JSON.parse(json)
       
