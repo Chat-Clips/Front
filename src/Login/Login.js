@@ -19,7 +19,8 @@ function Login(){
         password: pwd
       };
       try{
-        const res=await axios.post("http://13.125.121.147:8080/user/login",data);
+        //const res=await axios.post("http://13.125.121.147:8080/user/login",data);
+        const res=await axios.post("/user/login",data);
         console.log(data,res);
         return res;
       }

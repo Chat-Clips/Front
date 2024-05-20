@@ -23,7 +23,8 @@ function Chatroom(props){
     //웹소켓 연결
     const connectStomp=()=>{
       try{
-        const socket=new WebSocket("ws://13.125.121.147:8080/ws");
+        //const socket=new WebSocket("ws://13.125.121.147:8080/ws");
+        const socket=new WebSocket("ws://localhost:8080/ws");
         stompClient.current=Stomp.over(socket);
         stompClient.current.connect({},()=>{
           stompClient.current.subscribe("/sub/chatroom/"+props.roomId,(message)=>
@@ -69,13 +70,14 @@ function Chatroom(props){
     };
     fetch();
 
-    return() => disconnectStomp();
+    //return() => disconnectStomp();
   },[props.roomId]) //roomId가 바뀐 경우
 
   //채팅 내용 복구
   const getChatting=async(rid)=>{
     try{
-      const res=await axios.get('http://13.125.121.147:8080/chatroom/loadChatting?roomId='+rid)
+      //const res=await axios.get('http://13.125.121.147:8080/chatroom/loadChatting?roomId='+rid)
+      const res=await axios.get('/chatroom/loadChatting?roomId='+rid)
       var json=JSON.stringify(res.data.result.loadChat)
       var jp=JSON.parse(json)
       
@@ -102,7 +104,8 @@ function Chatroom(props){
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        const res= await axios.get('http://13.125.121.147:8080/chatroom/exitChatting?roomId='+roomId);
+        //const res= await axios.get('http://13.125.121.147:8080/chatroom/exitChatting?roomId='+roomId);
+        const res= await axios.get('/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }
@@ -121,7 +124,8 @@ function Chatroom(props){
           let data={
             message : msg
           };
-          const res=await axios.post('http://13.125.121.147:8080/api/chat',data);
+          //const res=await axios.post('http://13.125.121.147:8080/api/chat',data);
+          const res=await axios.post('/api/chat',data);
           console.log(res.data.result.message)
           await props.note(res.data.result.message)
         }
@@ -156,7 +160,8 @@ function Chatroom(props){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        const res=await axios.get('http://13.125.121.147:8080/user/id/'+msg.sender);
+        //const res=await axios.get('http://13.125.121.147:8080/user/id/'+msg.sender);
+        const res=await axios.get('/user/id/'+msg.sender);
         const dt=await res.data;
         
         let newjp=[...jp]
