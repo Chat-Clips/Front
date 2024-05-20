@@ -2,10 +2,10 @@ import './Chat.css'
 import { useState ,useRef, useEffect } from 'react';
 import '../App.css';
 import * as dayjs from 'dayjs';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { Uid } from '../Tools/atoms';
 import { Stomp } from '@stomp/stompjs';
+import api from '../apis/api';
 
 function Chatroom(props){
   //const {roomId}=useParams();
@@ -76,8 +76,7 @@ function Chatroom(props){
   //채팅 내용 복구
   const getChatting=async(rid)=>{
     try{
-      //const res=await axios.get('http://13.125.121.147:8080/chatroom/loadChatting?roomId='+rid)
-      const res=await axios.get('/chatroom/loadChatting?roomId='+rid)
+      const res=await api.get('/chatroom/loadChatting?roomId='+rid)
       var json=JSON.stringify(res.data.result.loadChat)
       var jp=JSON.parse(json)
       
@@ -104,8 +103,7 @@ function Chatroom(props){
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        //const res= await axios.get('http://13.125.121.147:8080/chatroom/exitChatting?roomId='+roomId);
-        const res= await axios.get('/chatroom/exitChatting?roomId='+roomId);
+        const res= await api.get('/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }
@@ -124,8 +122,7 @@ function Chatroom(props){
           let data={
             message : msg
           };
-          //const res=await axios.post('http://13.125.121.147:8080/api/chat',data);
-          const res=await axios.post('/api/chat',data);
+          const res=await api.post('/api/chat',data);
           console.log(res.data.result.message)
           await props.note(res.data.result.message)
         }
@@ -160,8 +157,7 @@ function Chatroom(props){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        //const res=await axios.get('http://13.125.121.147:8080/user/id/'+msg.sender);
-        const res=await axios.get('/user/id/'+msg.sender);
+        const res=await api.get('/user/id/'+msg.sender);
         const dt=await res.data;
         
         let newjp=[...jp]

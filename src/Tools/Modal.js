@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { Uid } from './atoms';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { Stomp } from '@stomp/stompjs';
+import api from '../apis/api';
 
 function Modal(props){
     const stompClient=useRef(null);
@@ -24,8 +25,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            //const res= await axios.post('http://13.125.121.147:8080/chatroom/createRoom?roomName='+roomname);
-            const res= await axios.post('/chatroom/createRoom?roomName='+roomname);
+            const res= await api.post('/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }

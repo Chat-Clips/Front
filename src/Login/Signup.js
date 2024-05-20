@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Signup.css'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../apis/api';
 
 function Signup(){
     const navigate=useNavigate();
@@ -12,7 +12,7 @@ function Signup(){
     const movetobef=()=>{
       navigate('/Login');
     }
-
+    console.log(process.env.REACT_APP_API_BASE_URL)
     const PostSignup=async()=>{
       let data={
         userId: id,
@@ -20,8 +20,7 @@ function Signup(){
         password: pwd
       };
       try{
-        //const res=await axios.post("http://13.125.121.147:8080/user/signup", data);
-        const res=await axios.post("/user/signup", data);
+        const res=await api.post("/user/signup", data);
         console.log(data,res);
         return res;
       }
