@@ -64,21 +64,27 @@ function Chatroom(props){
   //
   useEffect(()=>{
     const fetch = async () => {
-      await setRoomId(props.roomId)
+      setRoomId(props.roomId)
       await connectStomp();
       await getChatting(props.roomId);
+      console.log("방바뀜");
     };
     fetch();
-
+    // return () => {
+    //   disconnectStomp();
+    // }
     //return() => disconnectStomp();
   },[props.roomId]) //roomId가 바뀐 경우
 
   //채팅 내용 복구
   const getChatting=async(rid)=>{
     try{
-      const res=await api.get('/chatroom/loadChatting?roomId='+rid)
-      var json=JSON.stringify(res.data.result.loadChat)
-      var jp=JSON.parse(json)
+      console.log(rid);
+      const res=await api.get('http://localhost:8080/chatroom/loadChatting?roomId='+rid)
+      console.log("123");
+      var json=JSON.stringify(res.data.result.loadChats);
+      console.log(res.data.result.loadChats);
+      var jp=JSON.parse(json);
       
       setJp(jp);
     }

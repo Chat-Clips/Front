@@ -76,7 +76,7 @@ function Header(props){
   },[init]);
 
   const initChatholder=()=>{
-    wait(3000)
+    //wait(3000)
     Getlist();
     setInit(!init)
   }
