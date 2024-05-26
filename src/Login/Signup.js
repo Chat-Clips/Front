@@ -10,7 +10,7 @@ function Signup(){
     const [nickname, setNickname]=useState('')
 
     const movetobef=()=>{
-      navigate('/Login');
+      navigate('/');
     }
     console.log(process.env.REACT_APP_API_BASE_URL)
     const PostSignup=async()=>{
@@ -33,7 +33,7 @@ function Signup(){
       const res= await PostSignup();
       if(res.data === "회원가입이 완료되었습니다."){
         alert('회원가입 완료');
-        navigate('/Login');
+        navigate('/');
       }else{
         alert(res.data);
         setId('');setNickname('');setPwd('');

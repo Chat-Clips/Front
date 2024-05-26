@@ -38,7 +38,7 @@ function Login(){
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
         Getrecoil();
-        navigate('/App');
+        navigate(`/App/${id}/`);
       }else{
         alert(res.data)
         setId('');

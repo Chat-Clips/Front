@@ -1,5 +1,4 @@
 import '../App.css'
-import './Summary.css'
 
 function Summary(props){
     return(

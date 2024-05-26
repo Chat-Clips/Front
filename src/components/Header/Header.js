@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useState, useLocation} from 'react';
 import './Header.css'
-import { useNavigate } from 'react-router-dom';
-import Modal from './Modal';
-import { Uid } from './atoms';
+import { useNavigate, useParams } from 'react-router-dom';
+import Modal from '../../Tools/Modal';
+import { Uid } from '../../Tools/atoms';
 import { useRecoilValue } from 'recoil';
 import { wait } from '@testing-library/user-event/dist/utils';
-import api from '../apis/api';
+import api from '../../apis/api';
 
 function Header(props){
   const navigate=useNavigate();
@@ -45,7 +45,7 @@ function Header(props){
     console.log(res)
     if(res.data === "로그아웃" || res.data===""){
       alert("로그아웃")
-      navigate('/Login');
+      navigate('/');
     }
     else{
       alert(res.data);
@@ -86,9 +86,9 @@ function Header(props){
     <div>
       <div className='Header'>
         <button className='menu_btn' onClick={clickMenu}>☰</button>
-        <div>Chatclips</div>
+        <button className='header_btn'>Chatclips</button>
         <div></div>
-        <button className='logout' onClick={handlelogout}>Logout</button>
+        <button className='header_btn' onClick={handlelogout}>Logout</button>
       </div>
       <div className={menuOpen ? 'menu_unfold' : 'menu_fold'}>
         <React.Fragment>
@@ -107,12 +107,15 @@ function Header(props){
 }
 
 function Chatroomlist(props){
+  const navigate=useNavigate();
+  const uid=useRecoilValue(Uid)
   const [title, setTitle]=useState(null)
   const [key, setKey]=useState(null)
   
   useEffect(()=>{
     if(title!==null && props.idlist!==null){
       props.clickevent(title, props.idlist[key])
+      navigate(`/App/${uid}/chat/${props.idlist[key]}`)
     }
     //console.log(title,props.idlist[key])
     },[title,key])
