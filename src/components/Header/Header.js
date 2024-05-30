@@ -82,6 +82,10 @@ function Header(props){
   }
   //
 
+  const gotofeedback=()=>{
+    navigate(`/App/feedback`);
+  }
+
   return(
     <div>
       <div className='Header'>
@@ -96,7 +100,7 @@ function Header(props){
           <Modal uid={uid} open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
           </Modal>
         </React.Fragment>
-        <button className='btn'>{menuOpen ? '✔ feedback' : '✔'}</button>
+        <button className='btn' onClick={gotofeedback}>{menuOpen ? '✔ feedback' : '✔'}</button>
         <div className='chatholder'>
           <Chatroomlist open={modalOpen} list={chatroomlist} clickevent={props.getinfo} idlist={roomIdlist}/>
         </div>
@@ -115,7 +119,7 @@ function Chatroomlist(props){
   useEffect(()=>{
     if(title!==null && props.idlist!==null){
       props.clickevent(title, props.idlist[key])
-      navigate(`/App/${uid}/chat/${props.idlist[key]}`)
+      navigate(`/App/chat/${props.idlist[key]}`)
     }
     //console.log(title,props.idlist[key])
     },[title,key])
