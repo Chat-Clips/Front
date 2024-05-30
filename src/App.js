@@ -5,6 +5,7 @@ import Chatroom from './main/Chat/Chat'
 import Summary from './main/Summary';
 import Layout from './components/Layout';
 import Readme from './main/Readme';
+import FeedbackRouter from './main/Feedback/FeedbackRouter';
 
 function App() {
   const [foldsidebar, setFoldsidebar]=useState(false)
@@ -37,9 +38,10 @@ function App() {
   return(
     <Layout handlechild={handlechild} handlesidebar={handlesidebar} foldsidebar={foldsidebar} chat={chat}>
       <Routes>
-        <Route exact path='/:id' element={<Readme sidebar={foldsidebar} />}/>
-        <Route path='/:id/chat/:rid' element={<Chatroom title={chat.title} roomId={chat.roomId} lock={handleLock} note={getGptsum} />}/>
-        <Route path='/:id/summary/:rid' element={<Summary note={note} sidebar={foldsidebar} />}/>
+        <Route exact path='/' element={<Readme sidebar={foldsidebar} />}/>
+        <Route path='/chat/:rid' element={<Chatroom title={chat.title} roomId={chat.roomId} lock={handleLock} note={getGptsum} />}/>
+        <Route path='/summary/:rid' element={<Summary note={note} sidebar={foldsidebar} />}/>
+        <Route path='/feedback/*' element={<FeedbackRouter />}/>
       </Routes>
     </Layout>
   );
