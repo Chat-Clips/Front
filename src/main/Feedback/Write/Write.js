@@ -1,13 +1,51 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Write.module.css"
+import { Uid } from "../../../Tools/atoms";
+import { useRecoilValue } from "recoil";
+import { addPost } from "../../../apis/feedback";
+import { getByname } from "../../../apis/user";
 
-const Write = ({ addPost }) => {
+const Write = () => {
+    const navigate = useNavigate();
+    const uid=useRecoilValue(Uid);
     const [title, setTitle] = useState(""); // 제목을 위한 상태
     const [content, setContent] = useState(""); // 내용을 위한 상태
     const params=useParams();
-  
-    const navigate = useNavigate();
+
+    const postData=async()=>{
+      const id=getByname(uid)
+      id.then(promiseresult => {
+        const id = promiseresult.data.result.user;
+        console.log(id.id);
+
+        
+      let data={
+        title : title,
+        text : content,
+        id : id.id
+      }
+      try{
+        const res=addPost(data);
+        
+        res.then(promiseresult => {
+            const data = promiseresult;
+            console.log(data);
+            if(data.status===200){
+              alert("포스팅 되었습니다.")
+              navigate(`/App/feedback`);
+            }
+            else{
+              alert(data.data.message)
+            }
+        });
+      }
+      catch(err){
+        console.log(err)
+      }
+    })
+
+    }
   
     const onSubmit = (event) => {
       event.preventDefault(); // 폼 제출 시 페이지가 새로고침되는 것을 방지
@@ -21,8 +59,7 @@ const Write = ({ addPost }) => {
         return;
       }
   
-      addPost(title, content); // 콜백함수 호출 => error
-      navigate(`/App/feedback`); // Feedback으로 이동
+      postData();
     };
   
     const onChangeTitle = (event) => {
