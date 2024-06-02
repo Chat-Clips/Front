@@ -56,7 +56,7 @@ function Chatroom(props){
         body: JSON.stringify({
             type: "TALK",
             roomId: roomId,
-            sender: params.id,
+            sender: uid,
             message: text,
             time : currentTime
         }),
@@ -107,7 +107,7 @@ function Chatroom(props){
     const finBtn=async()=>{
       await getgptsummarize();
       lock(roomId)
-      navigate(`/App/${params.id}/summary/${params.rid}`)
+      navigate(`/App/${uid}/summary/${params.rid}`)
     }
 
     //채팅 내용 crawling

@@ -41,7 +41,7 @@ function App() {
         <Route exact path='/' element={<Readme sidebar={foldsidebar} />}/>
         <Route path='/chat/:rid' element={<Chatroom title={chat.title} roomId={chat.roomId} lock={handleLock} note={getGptsum} />}/>
         <Route path='/summary/:rid' element={<Summary note={note} sidebar={foldsidebar} />}/>
-        <Route path='/feedback/*' element={<FeedbackRouter />}/>
+        <Route path='/feedback/*' element={<FeedbackRouter title={handlechild}/>}/>
       </Routes>
     </Layout>
   );
