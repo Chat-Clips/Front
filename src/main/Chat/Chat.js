@@ -58,12 +58,14 @@ function Chatroom(props){
             roomId: roomId,
             sender: uid,
             message: text,
-            time : currentTime
         }),
       });
     }
   };
 
+  useEffect(() => {
+    getChatting(props.roomId);
+  }, [text]);
   //
   useEffect(()=>{
     const fetch = async () => {
@@ -113,7 +115,7 @@ function Chatroom(props){
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        const res= await api.get('/chatroom/exitChatting?roomId='+roomId);
+        const res= await api.get('http://localhost:8080/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }

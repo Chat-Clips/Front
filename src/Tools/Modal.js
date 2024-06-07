@@ -15,7 +15,25 @@ function Modal(props){
     const [roomname, setRoomname]=useState("")
     const [roomId, setRoomId]=useState('')
    // const [join, setJoin]=useState(false)
-    
+   const Getlist=async()=>{
+    try{
+      console.log(uid);
+      const res= await api.get('/chatroom?userId='+uid);
+      let namelist=[]
+      let idlist=[]
+      for(var i=0; i< res.data.length;++i){
+        namelist.push(res.data[i].roomName);
+        idlist.push(res.data[i].roomId);
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+   useEffect(() => {
+        Getlist();
+   }, [enter])
     const handleclickclosebtn=()=>{
         close()
         setRoomId("")
@@ -51,12 +69,11 @@ function Modal(props){
     useEffect(()=>{
         connectStomp();
         
-        //return()=>disconnectStomp()
+        return()=>disconnectStomp()
     },[])
 
     const userenter=()=>{
         const currentTime=dayjs();
-        wait(3000)
         stompClient.current.publish({
             destination: "/pub/enterUser",
             body: JSON.stringify({
@@ -64,7 +81,6 @@ function Modal(props){
                 roomId: roomId,
                 sender: uid,
                 message: '입장',
-                time : currentTime
             }),
         });
     }
@@ -72,7 +88,7 @@ function Modal(props){
     const handlejoinRoom =(event) => {
         event.preventDefault();
         userenter();
-        enter()
+        enter();
         handleclickclosebtn();
     }
     //
@@ -108,7 +124,7 @@ function Modal(props){
     //웹소켓 연결 해제
     const disconnectStomp=()=>{
         if(stompClient.current.connected){
-        stompClient.current.deactivate();;
+        stompClient.current.deactivate();
         }
     }
 
