@@ -2,8 +2,6 @@ import './Chat.css'
 import { useState ,useRef, useEffect } from 'react';
 import '../../App.css';
 import * as dayjs from 'dayjs';
-import { useRecoilValue } from 'recoil';
-import { Uid } from '../../Tools/atoms';
 import { Stomp } from '@stomp/stompjs';
 import api from '../../apis/api';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,7 +10,7 @@ function Chatroom(props){
   //const {roomId}=useParams();
   const stompClient=useRef(null);
   const messageEndRef = useRef();
-  const uid=useRecoilValue(Uid);
+  const uid=window.sessionStorage.getItem('user')
   const params=useParams();
   const [roomId, setRoomId]=useState(props.roomId)
   const lock=props.lock
@@ -109,7 +107,7 @@ function Chatroom(props){
     const finBtn=async()=>{
       await getgptsummarize();
       lock(roomId)
-      navigate(`/App/${uid}/summary/${params.rid}`)
+      navigate(`/App/summary/${params.rid}`)
     }
 
     //채팅 내용 crawling

@@ -3,14 +3,11 @@ import { useState, useLocation} from 'react';
 import './Header.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../Tools/Modal';
-import { Uid } from '../../Tools/atoms';
-import { useRecoilValue } from 'recoil';
-import { wait } from '@testing-library/user-event/dist/utils';
 import api from '../../apis/api';
 
 function Header(props){
   const navigate=useNavigate();
-  const uid=useRecoilValue(Uid)
+  const uid=window.sessionStorage.getItem('user')
   const [modalOpen, setModalOpen]=useState(false)
   const [init,setInit]=useState(false)
   const [menuOpen, setMenuOpen]=useState(true)
@@ -45,6 +42,7 @@ function Header(props){
     console.log(res)
     if(res.data === "로그아웃" || res.data===""){
       alert("로그아웃")
+      window.sessionStorage.removeItem('user')
       navigate('/');
     }
     else{
@@ -112,7 +110,6 @@ function Header(props){
 
 function Chatroomlist(props){
   const navigate=useNavigate();
-  const uid=useRecoilValue(Uid)
   const [title, setTitle]=useState(null)
   const [key, setKey]=useState(null)
   
