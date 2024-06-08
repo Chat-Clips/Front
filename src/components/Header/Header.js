@@ -76,7 +76,6 @@ function Header(props){
   },[init]);
 
   const initChatholder=()=>{
-    //wait(3000)
     Getlist();
     setInit(!init)
   }
@@ -97,7 +96,7 @@ function Header(props){
       <div className={menuOpen ? 'menu_unfold' : 'menu_fold'}>
         <React.Fragment>
           <button className='btn' onClick={openModal}>{menuOpen ? '✉ new chat' : '✉'}</button>
-          <Modal uid={uid} open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
+          <Modal open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
           </Modal>
         </React.Fragment>
         <button className='btn' onClick={gotofeedback}>{menuOpen ? '✔ feedback' : '✔'}</button>

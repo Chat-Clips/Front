@@ -14,7 +14,6 @@ function Modal(props){
     const {open, close, enter, header }=props
     const [roomname, setRoomname]=useState("")
     const [roomId, setRoomId]=useState('')
-   // const [join, setJoin]=useState(false)
     
     const handleclickclosebtn=()=>{
         close()
@@ -25,7 +24,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await api.post('/chatroom/createRoom?roomName='+roomname);
+            const res= await api.post('http://localhost:8080/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }
@@ -49,22 +48,21 @@ function Modal(props){
     
     //EnterChatroom
     useEffect(()=>{
-        connectStomp();
-        
-        //return()=>disconnectStomp()
-    },[])
+        if(roomId){
+            connectStomp();
+            //return()=>disconnectStomp()
+        }
+
+    },[roomId]);
 
     const userenter=()=>{
-        const currentTime=dayjs();
-        wait(3000)
         stompClient.current.publish({
             destination: "/pub/enterUser",
             body: JSON.stringify({
                 type: "ENTER",
                 roomId: roomId,
                 sender: uid,
-                message: '입장',
-                time : currentTime
+                message: '입장'
             }),
         });
     }
@@ -80,7 +78,6 @@ function Modal(props){
     //웹소켓 연결
     const connectStomp=()=>{
         try{
-          //const socket=new WebSocket("ws://13.125.121.147:8080/ws");
           const socket=new WebSocket("ws://localhost:8080/ws");
           stompClient.current=Stomp.over(socket);
           stompClient.current.connect({},()=>{
@@ -95,8 +92,8 @@ function Modal(props){
                 }*/
               }    
             });
-          console.log(roomId);
-          stompClient.current.activate();
+            console.log(roomId);
+            stompClient.current.activate();
           });
         }
         catch(error){
@@ -108,7 +105,7 @@ function Modal(props){
     //웹소켓 연결 해제
     const disconnectStomp=()=>{
         if(stompClient.current.connected){
-        stompClient.current.deactivate();;
+            stompClient.current.deactivate();;
         }
     }
 

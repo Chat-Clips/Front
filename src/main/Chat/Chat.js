@@ -15,7 +15,7 @@ function Chatroom(props){
   const uid=useRecoilValue(Uid);
   const params=useParams();
   const [roomId, setRoomId]=useState(props.roomId)
-  const lock=props.lock
+  const lock=props.lock;
   const navigate=useNavigate();
 
     const [text, setText]=useState('');
@@ -26,7 +26,6 @@ function Chatroom(props){
     //웹소켓 연결
     const connectStomp=()=>{
       try{
-        //const socket=new WebSocket("ws://13.125.121.147:8080/ws");
         const socket=new WebSocket("ws://localhost:8080/ws");
         stompClient.current=Stomp.over(socket);
         stompClient.current.connect({},()=>{
@@ -49,7 +48,6 @@ function Chatroom(props){
     
   //메세지 보내기
   const SendMessage=() =>{
-    const currentTime=dayjs();
     if(stompClient.current && text){
       stompClient.current.publish({
         destination: "/pub/sendMessage",
@@ -57,17 +55,30 @@ function Chatroom(props){
             type: "TALK",
             roomId: roomId,
             sender: uid,
-            message: text,
-            time : currentTime
+            message: text
         }),
       });
     }
   };
 
+  const isTerminate=async(rid)=>{
+    try{
+      const res=await api.get('http://localhost:8080/chatroom/is_terminate?roomId='+rid)
+      return res.data;
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
   //
   useEffect(()=>{
     const fetch = async () => {
       setRoomId(props.roomId)
+      const res = await isTerminate(props.roomId);
+      if(res){
+        navigate(`/App/summary/${params.rid}`);
+      }
       await connectStomp();
       await getChatting(props.roomId);
       console.log("방바뀜");
@@ -83,8 +94,8 @@ function Chatroom(props){
   const getChatting=async(rid)=>{
     try{
       console.log(rid);
+
       const res=await api.get('http://localhost:8080/chatroom/loadChatting?roomId='+rid)
-      console.log("123");
       var json=JSON.stringify(res.data.result.loadChats);
       console.log(res.data.result.loadChats);
       var jp=JSON.parse(json);
@@ -102,18 +113,17 @@ function Chatroom(props){
     messageEndRef.current.scrollIntoView({behavior: 'smooth'});
     console.log(jp)
   }, [jp]);
-    
+
   //회의 끝내기
     const finBtn=async()=>{
       await getgptsummarize();
       lock(roomId)
-      navigate(`/App/${uid}/summary/${params.rid}`)
     }
 
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        const res= await api.get('/chatroom/exitChatting?roomId='+roomId);
+        const res= await api.get('http://localhost:8080/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }
@@ -121,6 +131,7 @@ function Chatroom(props){
         console.log(err)
       }
     }
+
 
     //gpt에 채팅 내용 전달 및 요약 받기
     const getgptsummarize=async()=>{
@@ -132,8 +143,15 @@ function Chatroom(props){
           let data={
             message : msg
           };
-          const res=await api.post('/api/chat',data);
+          const res=await api.post('http://localhost:8080/api/chat',data);
           console.log(res.data.result.message)
+          let summaryData={
+            roomId: roomId,
+            summary: res.data.result.message
+          };
+    
+          await api.post('http://localhost:8080/summarize/save', summaryData)
+          .then(navigate(`/App/summary/${params.rid}`));
           await props.note(res.data.result.message)
         }
         catch(err){
@@ -167,12 +185,13 @@ function Chatroom(props){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        const res=await api.get('/user/id/'+msg.sender);
+        const res=await api.get('http://localhost:8080/user/'+msg.sender);
         const dt=await res.data;
         
         let newjp=[...jp]
+        
         let data={
-          userName: dt,
+          userName: dt.result.username,
           chat : msg.message
         }
         newjp.push(data)
