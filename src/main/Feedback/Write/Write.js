@@ -8,7 +8,7 @@ import { getByname } from "../../../apis/user";
 
 const Write = () => {
     const navigate = useNavigate();
-    const uid=useRecoilValue(Uid);
+    const uid=window.sessionStorage.getItem('user')
     const [title, setTitle] = useState(""); // 제목을 위한 상태
     const [content, setContent] = useState(""); // 내용을 위한 상태
     const params=useParams();

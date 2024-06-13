@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { Uid } from '../Tools/atoms';
 import api from '../apis/api';
 
 function Login(){
     const navigate=useNavigate();
     const [id, setId]=useState('')
     const [pwd, setPwd]=useState('')
-    const [uid, setUid]=useRecoilState(Uid);
 
-    console.log(uid)
+    //console.log(uid)
     
     const PostLogin=async()=>{
       let data={
@@ -28,16 +25,12 @@ function Login(){
       }
     }
 
-    const Getrecoil=()=>{
-      setUid(id);
-    }
-
     const handlelogin = async(event) =>{
       event.preventDefault()
       const res= await PostLogin();
       if(res.data === '로그인 성공'){
         alert('로그인 성공!')
-        Getrecoil();
+        window.sessionStorage.setItem('user', id)
         navigate(`/App/`);
       }else{
         alert(res.data)

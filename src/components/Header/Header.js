@@ -3,14 +3,11 @@ import { useState, useLocation} from 'react';
 import './Header.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../Tools/Modal';
-import { Uid } from '../../Tools/atoms';
-import { useRecoilValue } from 'recoil';
-import { wait } from '@testing-library/user-event/dist/utils';
 import api from '../../apis/api';
 
 function Header(props){
   const navigate=useNavigate();
-  const uid=useRecoilValue(Uid)
+  const uid=window.sessionStorage.getItem('user')
   const [modalOpen, setModalOpen]=useState(false)
   const [init,setInit]=useState(false)
   const [menuOpen, setMenuOpen]=useState(true)
@@ -55,7 +52,7 @@ function Header(props){
   //참여하고 있는 채팅방 표시
   const Getlist=async()=>{
     try{
-      console.log(uid);
+      //console.log(uid);
       const res= await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
@@ -111,7 +108,7 @@ function Header(props){
 
 function Chatroomlist(props){
   const navigate=useNavigate();
-  const uid=useRecoilValue(Uid)
+  const uid=window.sessionStorage.getItem('user')
   const [title, setTitle]=useState(null)
   const [key, setKey]=useState(null)
   
