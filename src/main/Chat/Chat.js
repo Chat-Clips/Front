@@ -75,11 +75,14 @@ function Chatroom(props){
       setRoomId(props.roomId)
       const res = await isTerminate(props.roomId);
       if(res){
+        disconnectStomp();
         navigate(`/App/summary/${params.rid}`);
       }
-      await connectStomp();
-      await getChatting(props.roomId);
-      console.log("방바뀜");
+      else{
+        await connectStomp();
+        await getChatting(props.roomId);
+        console.log("방바뀜");
+      }
     };
     fetch();
     // return () => {
@@ -105,6 +108,7 @@ function Chatroom(props){
     }
   }
   //
+  
 
   //자동 스크롤
   useEffect(()=>{
@@ -148,8 +152,9 @@ function Chatroom(props){
             summary: res.data.result.message
           };
     
+          disconnectStomp();
           await api.post(process.env.REACT_APP_API_BASE_URL+'/summarize/save', summaryData)
-          .then(navigate(`/App/summary/${params.rid}`));
+          navigate(`/App/summary/${params.rid}`);
           await props.note(res.data.result.message)
         }
         catch(err){

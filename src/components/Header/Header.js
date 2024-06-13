@@ -70,7 +70,7 @@ function Header(props){
 
   useEffect(()=>{
     Getlist();
-  },[openModal]);
+  },[modalOpen, uid]);
 
   const initChatholder=()=>{
     Getlist();

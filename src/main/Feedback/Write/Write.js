@@ -16,14 +16,10 @@ const Write = () => {
     const postData=async()=>{
       const id=getByname(uid)
       id.then(promiseresult => {
-        const id = promiseresult.data.result.user;
-        console.log(id.id);
-
-        
       let data={
         title : title,
         text : content,
-        id : id.id
+        userId : uid
       }
       try{
         const res=addPost(data);

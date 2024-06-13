@@ -10,7 +10,7 @@ import api from '../apis/api';
 
 function Modal(props){
     const stompClient=useRef(null);
-    const uid=useRecoilValue(Uid)
+    const uid=window.sessionStorage.getItem('user')
     const {open, close, enter, header }=props
     const [roomname, setRoomname]=useState("")
     const [roomId, setRoomId]=useState('')
