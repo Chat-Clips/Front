@@ -10,7 +10,7 @@ export const addPost=(props)=>{
 
     try{
         console.log(data)
-        const res=api.post('http://13.209.114.61:8080/feedback/post',data)
+        const res=api.post('http://52.79.42.86:8080/feedback/post',data)
         console.log(res)
         return res;
     }
@@ -27,7 +27,7 @@ export const updateFeedback=(props)=>{
     }
 
     try{
-        const res=api.post('http://13.209.114.61:8080/feedback/update',data)
+        const res=api.post('http://52.79.42.86:8080/feedback/update',data)
         console.log(res)
         return res;
     }
@@ -38,7 +38,7 @@ export const updateFeedback=(props)=>{
 
 export const deletePost=(postId)=>{
     try{
-        const res=api.delete('http://13.209.114.61:8080/feedback/delete/', postId)
+        const res=api.delete('http://52.79.42.86:8080/feedback/delete/', postId)
         console.log(res)
         return res;
     }

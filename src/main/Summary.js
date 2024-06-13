@@ -19,7 +19,7 @@ function Summary(props) {
 
   useEffect(() => {
     getSummary();
-  }, [rid]);
+  }, []);
 
   return (
     <div className={props.sidebar ? 'wrapper_fold' : 'wrapper_unfold'}>
