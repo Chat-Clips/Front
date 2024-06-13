@@ -10,10 +10,7 @@ function Summary(props) {
 
   const getSummary = async () => {
     try {
-      console.log(111);
-      console.log(rid);
-      const res = await api.get('http://localhost:8080/summarize/get_summary?roomId=' + rid);
-      console.log(res);
+      const res = await api.get(process.env.REACT_APP_API_BASE_URL+'/summarize/get_summary?roomId=' + rid);
       setSummary(res.data.result.summarize);
     } catch (error) {
       console.log(error);

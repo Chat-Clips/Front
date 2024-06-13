@@ -20,7 +20,7 @@ function Signup(){
         password: pwd
       };
       try{
-        const res=await api.post("/user/signup", data);
+        const res=await api.post(process.env.REACT_APP_API_BASE_URL+"/user/signup", data);
         console.log(data,res);
         return res;
       }

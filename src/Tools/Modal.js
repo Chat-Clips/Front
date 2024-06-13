@@ -24,7 +24,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await api.post('http://localhost:8080/chatroom/createRoom?roomName='+roomname);
+            const res= await api.post(process.env.REACT_APP_API_BASE_URL+'/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }

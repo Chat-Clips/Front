@@ -32,7 +32,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await api.post('/user/logout');
+      const res = await api.post(process.env.REACT_APP_API_BASE_URL+'/user/logout');
       return res;
     }
     catch(error){
@@ -56,7 +56,7 @@ function Header(props){
   const Getlist=async()=>{
     try{
       console.log(uid);
-      const res= await api.get('/chatroom?userId='+uid);
+      const res= await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){

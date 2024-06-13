@@ -63,7 +63,7 @@ function Chatroom(props){
 
   const isTerminate=async(rid)=>{
     try{
-      const res=await api.get('http://localhost:8080/chatroom/is_terminate?roomId='+rid)
+      const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/is_terminate?roomId='+rid)
       return res.data;
     }
     catch(err){
@@ -95,7 +95,7 @@ function Chatroom(props){
     try{
       console.log(rid);
 
-      const res=await api.get('http://localhost:8080/chatroom/loadChatting?roomId='+rid)
+      const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/loadChatting?roomId='+rid)
       var json=JSON.stringify(res.data.result.loadChats);
       console.log(res.data.result.loadChats);
       var jp=JSON.parse(json);
@@ -123,7 +123,7 @@ function Chatroom(props){
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        const res= await api.get('http://localhost:8080/chatroom/exitChatting?roomId='+roomId);
+        const res= await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }
@@ -143,14 +143,14 @@ function Chatroom(props){
           let data={
             message : msg
           };
-          const res=await api.post('http://localhost:8080/api/chat',data);
+          const res=await api.post(process.env.REACT_APP_API_BASE_URL+'/api/chat',data);
           console.log(res.data.result.message)
           let summaryData={
             roomId: roomId,
             summary: res.data.result.message
           };
     
-          await api.post('http://localhost:8080/summarize/save', summaryData)
+          await api.post(process.env.REACT_APP_API_BASE_URL+'/summarize/save', summaryData)
           .then(navigate(`/App/summary/${params.rid}`));
           await props.note(res.data.result.message)
         }
@@ -185,7 +185,7 @@ function Chatroom(props){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        const res=await api.get('http://localhost:8080/user/'+msg.sender);
+        const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/user/'+msg.sender);
         const dt=await res.data;
         
         let newjp=[...jp]
