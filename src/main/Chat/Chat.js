@@ -85,10 +85,10 @@ function Chatroom(props){
       }
     };
     fetch();
-    // return () => {
-    //   disconnectStomp();
-    // }
-    //return() => disconnectStomp();
+    return () => {
+      disconnectStomp();
+    }
+    // return() => disconnectStomp();
   },[props.roomId]) //roomId가 바뀐 경우
 
   //채팅 내용 복구
