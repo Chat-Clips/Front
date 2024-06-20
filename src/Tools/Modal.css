@@ -49,6 +49,20 @@
   border-bottom: 1px solid #dee2e6;
 }
 
+.modal > section > main > div {
+  display: grid;
+  grid-template-rows: 10vh 2vh 5vh;
+
+  textarea{
+    border-radius: 5px;
+  }
+
+  button{
+    border-radius: 5px;
+    background-color: #dee2e6;
+  }
+}
+
 .modal > section > main input{
   border-radius: 10px;
 }

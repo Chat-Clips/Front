@@ -12,7 +12,6 @@ function Signup(){
     const movetobef=()=>{
       navigate('/');
     }
-    console.log(process.env.REACT_APP_API_BASE_URL)
     const PostSignup=async()=>{
       let data={
         userId: id,
@@ -20,7 +19,7 @@ function Signup(){
         password: pwd
       };
       try{
-        const res=await api.post(process.env.REACT_APP_API_BASE_URL+"/user/signup", data);
+        const res=await api.post("/user/signup", data);
         console.log(data,res);
         return res;
       }
