@@ -24,7 +24,7 @@ function Modal(props){
     //createChatroom
     const PostcreateRoom = async()=>{
         try{
-            const res= await api.post(process.env.REACT_APP_API_BASE_URL+'/chatroom/createRoom?roomName='+roomname);
+            const res= await api.post('/chatroom/createRoom?roomName='+roomname);
             //console.log(res);
             return res;
         }
@@ -78,7 +78,7 @@ function Modal(props){
     //웹소켓 연결
     const connectStomp=()=>{
         try{
-          const socket=new WebSocket("ws://52.79.42.86:8080/ws");
+          const socket=new WebSocket("ws://13.125.121.147:8080/ws");
           stompClient.current=Stomp.over(socket);
           stompClient.current.connect({},()=>{
             stompClient.current.subscribe("/sub/chatroom/"+roomId,(message)=>

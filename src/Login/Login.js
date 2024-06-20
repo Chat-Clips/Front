@@ -16,7 +16,7 @@ function Login(){
         password: pwd
       };
       try{
-        const res=await api.post(process.env.REACT_APP_API_BASE_URL+"/user/login",data);// 수정
+        const res=await api.post("/user/login",data);// 수정
         console.log(data,res);
         return res;
       }

@@ -4,6 +4,7 @@ import './Header.css'
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../Tools/Modal';
 import api from '../../apis/api';
+import FModal from '../../Tools/FeedbackModal';
 
 function Header(props){
   const navigate=useNavigate();
@@ -13,6 +14,8 @@ function Header(props){
   const [menuOpen, setMenuOpen]=useState(true)
   const [chatroomlist, setChatroomlist]=useState([]);
   const [roomIdlist, setRoomIdlist]=useState([])
+  const [feedbackOpen, setFeedbackOpen]=useState(false)
+  const [main, setGotomain]=useState(false)
   //console.log(uid)
 
   const openModal=()=>{
@@ -20,6 +23,12 @@ function Header(props){
   }
   const closeModal=()=>{
     setModalOpen(false)
+  }
+  const openFeedback=()=>{
+    setFeedbackOpen(true)
+  }
+  const closeFeedback=()=>{
+    setFeedbackOpen(false)
   }
 
   const clickMenu=()=>{
@@ -29,7 +38,7 @@ function Header(props){
 
   const Postlogout=async()=>{
     try{
-      const res = await api.post(process.env.REACT_APP_API_BASE_URL+'/user/logout');
+      const res = await api.post('/user/logout');
       return res;
     }
     catch(error){
@@ -53,7 +62,7 @@ function Header(props){
   const Getlist=async()=>{
     try{
       //console.log(uid);
-      const res= await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom?userId='+uid);
+      const res= await api.get('/chatroom?userId='+uid);
       let namelist=[]
       let idlist=[]
       for(var i=0; i< res.data.length;++i){
@@ -70,7 +79,7 @@ function Header(props){
 
   useEffect(()=>{
     Getlist();
-  },[modalOpen, uid]);
+  },[(modalOpen), uid]);
 
   const initChatholder=()=>{
     Getlist();
@@ -82,11 +91,21 @@ function Header(props){
     navigate(`/App/feedback`);
   }
 
+  const gotomain=()=>{
+    setGotomain(true)
+    props.getinfo("#main", null)
+    navigate(`/App/`)
+  }
+
+  const setGotomainFalse=()=>{
+    setGotomain(false)
+  }
+
   return(
     <div>
       <div className='Header'>
-        <button className='menu_btn' onClick={clickMenu}>☰</button>
-        <button className='header_btn'>Chatclips</button>
+        <button className='menu_btn'>☰</button>
+        <button className='header_btn' onClick={gotomain}>Chatclips</button>
         <div></div>
         <button className='header_btn' onClick={handlelogout}>Logout</button>
       </div>
@@ -96,9 +115,10 @@ function Header(props){
           <Modal open={modalOpen} close={closeModal} enter={initChatholder} header="new chat">
           </Modal>
         </React.Fragment>
-        <button className='btn' onClick={gotofeedback}>{menuOpen ? '✔ feedback' : '✔'}</button>
+        <button className='btn' onClick={openFeedback}>{menuOpen ? '✔ feedback' : '✔'}</button>
+        <FModal open={feedbackOpen} close={closeFeedback}></FModal>
         <div className='chatholder'>
-          <Chatroomlist open={modalOpen} list={chatroomlist} clickevent={props.getinfo} idlist={roomIdlist}/>
+          <Chatroomlist gotomain={main} setting={setGotomainFalse} list={chatroomlist} clickevent={props.getinfo} idlist={roomIdlist}/>
         </div>
       </div>
     </div>
@@ -108,7 +128,6 @@ function Header(props){
 
 function Chatroomlist(props){
   const navigate=useNavigate();
-  const uid=window.sessionStorage.getItem('user')
   const [title, setTitle]=useState(null)
   const [key, setKey]=useState(null)
   
@@ -118,7 +137,12 @@ function Chatroomlist(props){
       navigate(`/App/chat/${props.idlist[key]}`)
     }
     //console.log(title,props.idlist[key])
-    },[title,key])
+  },[title,key])
+
+  useEffect(()=>{
+    setTitle(null)
+    props.setting();
+  },[props.gotomain])
 
   return(
     props.list.map((name,i)=>{

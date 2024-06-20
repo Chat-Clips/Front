@@ -24,7 +24,7 @@ function Chatroom(props){
     //웹소켓 연결
     const connectStomp=()=>{
       try{
-        const socket=new WebSocket("ws://52.79.42.86:8080/ws");
+        const socket=new WebSocket("ws://13.125.121.147:8080/ws");
         stompClient.current=Stomp.over(socket);
         stompClient.current.connect({},()=>{
           stompClient.current.subscribe("/sub/chatroom/"+props.roomId,(message)=>
@@ -61,7 +61,7 @@ function Chatroom(props){
 
   const isTerminate=async(rid)=>{
     try{
-      const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/is_terminate?roomId='+rid)
+      const res=await api.get('/chatroom/is_terminate?roomId='+rid)
       return res.data;
     }
     catch(err){
@@ -96,7 +96,7 @@ function Chatroom(props){
     try{
       console.log(rid);
 
-      const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/loadChatting?roomId='+rid)
+      const res=await api.get('/chatroom/loadChatting?roomId='+rid)
       var json=JSON.stringify(res.data.result.loadChats);
       console.log(res.data.result.loadChats);
       var jp=JSON.parse(json);
@@ -125,7 +125,7 @@ function Chatroom(props){
     //채팅 내용 crawling
     const exitChatting=async()=>{
       try{
-        const res= await api.get(process.env.REACT_APP_API_BASE_URL+'/chatroom/exitChatting?roomId='+roomId);
+        const res= await api.get('/chatroom/exitChatting?roomId='+roomId);
             //console.log(res);
             return res;
       }
@@ -145,7 +145,7 @@ function Chatroom(props){
           let data={
             message : msg
           };
-          const res=await api.post(process.env.REACT_APP_API_BASE_URL+'/api/chat',data);
+          const res=await api.post('/api/chat',data);
           console.log(res.data.result.message)
           let summaryData={
             roomId: roomId,
@@ -153,7 +153,7 @@ function Chatroom(props){
           };
     
           disconnectStomp();
-          await api.post(process.env.REACT_APP_API_BASE_URL+'/summarize/save', summaryData)
+          await api.post('/summarize/save', summaryData)
           navigate(`/App/summary/${params.rid}`);
           await props.note(res.data.result.message)
         }
@@ -188,7 +188,7 @@ function Chatroom(props){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        const res=await api.get(process.env.REACT_APP_API_BASE_URL+'/user/'+msg.sender);
+        const res=await api.get('/user/'+msg.sender);
         const dt=await res.data;
         
         let newjp=[...jp]
@@ -206,7 +206,7 @@ function Chatroom(props){
       }
     }
 
-    if(msg===null){
+    if(msg===''){
       return;
     }
     fetchData()
