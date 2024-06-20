@@ -13,6 +13,7 @@ function Chatroom(props){
   const uid=window.sessionStorage.getItem('user')
   const params=useParams();
   const [roomId, setRoomId]=useState(props.roomId)
+  const [lockBtn, setLockBtn]=useState(false)
   const lock=props.lock;
   const navigate=useNavigate();
 
@@ -118,8 +119,13 @@ function Chatroom(props){
 
   //회의 끝내기
     const finBtn=async()=>{
-      await getgptsummarize();
-      lock(roomId)
+      if(!lockBtn){
+        await getgptsummarize();
+        lock(roomId)  
+      }
+      else{
+        console.log("잠겨있음")
+      }
     }
 
     //채팅 내용 crawling
@@ -161,7 +167,9 @@ function Chatroom(props){
           console.log(err)
         }
       }
-      fetchData()
+      setLockBtn(true)
+      await fetchData()
+      setLockBtn(false)
     }
   
 
