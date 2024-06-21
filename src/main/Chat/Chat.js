@@ -47,6 +47,7 @@ function Chatroom(props){
     
   //메세지 보내기
   const SendMessage=() =>{
+    stompClient.current.activate();
     if(stompClient.current && text){
       stompClient.current.publish({
         destination: "/pub/sendMessage",
@@ -57,6 +58,7 @@ function Chatroom(props){
             message: text
         }),
       });
+      disconnectStomp();
     }
   };
 
@@ -120,9 +122,10 @@ function Chatroom(props){
   //회의 끝내기
     const finBtn=async()=>{
       if(!lockBtn){
-        await getgptsummarize();
-        lock(roomId)  
-      }
+      await getgptsummarize();
+      navigate(`/App/summary/${params.rid}`);
+      lock(roomId)
+    }
       else{
         console.log("잠겨있음")
       }
@@ -160,7 +163,6 @@ function Chatroom(props){
     
           disconnectStomp();
           await api.post('/summarize/save', summaryData)
-          navigate(`/App/summary/${params.rid}`);
           await props.note(res.data.result.message)
         }
         catch(err){
